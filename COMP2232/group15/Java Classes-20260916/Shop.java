@@ -71,7 +71,35 @@ public class Shop
 			System.out.println("No mechanics are available");
 		}
 	}
+	private void listVehiclesUnderRepair(){
+		//this is false since the checks haven't begun
+		boolean isVehicleFound = false;
+		//loops through the vehicles object
+		for (int i=0; i < vehicles.length; i++) {
+			String vehicleModel = vehicles[i].company() + " " + vehicles[i].model() + " " + vehicles[i].type() + " " + vehicles[i].damage();
+			//checks for elements in the vehicles array with non-empty model values
+			// damage shows as 0 due to how the vehicle.class is writing and i cant change it because of the assignment requirements. so if anyone knows how to fix this please let me know.
+			if (!vehicleModel.isEmpty()) {
 
+				if (!isVehicleFound) {
+					//purely for aesthetic purposes
+					System.out.println();
+					System.out.println("Vehicles Under Repair: ");
+				}
+				//outputs a model when it matches that criteria
+				System.out.println(vehicleModel);
+				//is true every time a vehicle is found
+				isVehicleFound = true;
+			}
+		}
+		System.out.println("There is " + vehicles.length + " number of vehicles left.");
+		//checks if the boolean hasn't been changed after the loop
+		if (!isVehicleFound) {
+			//informs the user if that is the case
+			System.out.println("No vehicles are under repair");
+		}
+	}
+			
 	private void run()
 	{
 		// This is the starting point of the simulation.
@@ -106,6 +134,8 @@ public class Shop
 				break;
 				
 			case Menu.MENU_OPTION_VEHICLES_UNDER_REPAIR:
+				//shows a list of vehicles under repair once the user selects this option
+				listVehiclesUnderRepair();
 				break;
 				
 			case Menu.MENU_OPTION_TOTAL_VEHICLES_LEFT_TO_REPAIR: 
