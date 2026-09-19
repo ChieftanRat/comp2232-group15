@@ -71,7 +71,6 @@ public class Shop
 			System.out.println("No mechanics are available");
 		}
 	}
-	// start of the new method to list vehicles under repair 
 	private void listVehiclesUnderRepair(){
 		//this is false since the checks haven't begun
 		boolean isVehicleFound = false;
@@ -79,7 +78,7 @@ public class Shop
 		for (int i=0; i < vehicles.length; i++) {
 			String vehicleModel = vehicles[i].company() + " " + vehicles[i].model() + " " + vehicles[i].type() + " " + vehicles[i].damage();
 			//checks for elements in the vehicles array with non-empty model values
-			// damage shows as 0 due to how the 
+			// damage shows as 0 due to how the vehicle.class is writing and i cant change it because of the assignment requirements. so if anyone knows how to fix this please let me know.
 			if (!vehicleModel.isEmpty()) {
 
 				if (!isVehicleFound) {
@@ -93,6 +92,7 @@ public class Shop
 				isVehicleFound = true;
 			}
 		}
+		System.out.println("There is " + vehicles.length + " number of vehicles left.");
 		//checks if the boolean hasn't been changed after the loop
 		if (!isVehicleFound) {
 			//informs the user if that is the case
