@@ -41,7 +41,9 @@ public class Shop
 		for(int i = 0; i < DatabaseConstants.TOTAL_VEHICLES; i++)
 		{
 			vd = data.vehicle(i);
-			vehicles[i] = new Vehicle(vd.company(), vd.model(), vd.type(), vd.damage());
+			//the old Vechicle constructor never used the dmg value passed in here, as it would always be initialised to 0, 
+			// so we used DamagedVehicle instead which fixes this
+			vehicles[i] = new DamagedVehicle(vd.company(), vd.model(), vd.type(), vd.damage());
 		}
 	}
 
