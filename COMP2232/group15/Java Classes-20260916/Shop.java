@@ -45,6 +45,33 @@ public class Shop
 		}
 	}
 
+	private void listAvailableMechanics(){
+		//this is false since the checks haven't begun
+		boolean isMechanicFound = false;
+		//loops through the mechanics object
+		for (int i=0; i < mechanics.length; i++) {
+			String mechanicName = mechanics[i].name();
+			//checks for elements in the mechanics array with non-empty name values
+			if (!mechanicName.isEmpty()) {
+
+				if (!isMechanicFound) {
+					//purely for aesthetic purposes
+					System.out.println();
+					System.out.println("Available Mechanics: ");
+				}
+				//outputs a name when it matches that criteria
+				System.out.println(mechanicName);
+				//is true every time a mechanic is found
+				isMechanicFound = true;
+			}
+		}
+		//checks if the boolean hasn't been changed after the loop
+		if (!isMechanicFound) {
+			//informs the user if that is the case
+			System.out.println("No mechanics are available");
+		}
+	}
+
 	private void run()
 	{
 		// This is the starting point of the simulation.
@@ -74,6 +101,8 @@ public class Shop
 		switch(action)
 		{
 			case Menu.MENU_OPTION_AVAILABLE_MECHANICS:
+				//shows a list of available mechanics once the user selects this option
+				listAvailableMechanics();
 				break;
 				
 			case Menu.MENU_OPTION_VEHICLES_UNDER_REPAIR:
