@@ -1,0 +1,137 @@
+@ --------------------------------------------------------
+
+class Simulation
+! Contains the main method for running the simulation. !
+uses
+	Shop with 1 label simulates		! Simulates the shop. !;
+end
+#exclude
+
+@ --------------------------------------------------------
+
+class Shop
+! Manages the shop. !
+uses
+	Mechanic with 1 to * label employs 	! Available mechanics. !;
+	Vehicle with 0 to * label repairs	! Vehicles that need repair. !;
+	Display with 1 label uses		! Displays the information. !;
+	Menu with 1 label displays		! Manages the menu. !;
+end
+services
+	simulate				! Runs the simulation. !;
+end
+#exclude
+
+@ --------------------------------------------------------
+
+class Mechanic
+! Contains the details for each mechanic. !
+#exclude
+services
+	name 		! Name of the mechanic. !;
+	id 		! The mechanic ID. !;
+	experience 	! The experience level of the mechanic. !;
+end
+#exclude
+
+@ --------------------------------------------------------
+
+class Vehicle
+! Contains information about specific types of vehicles. !
+services
+	company		! The company that manufactures the vehicle. !;
+	type		! The type of vehicle such as car or van. !;
+	model		! The model of the vehicle. !;
+	damage		! The type of damage. !;
+end
+#exclude
+
+@ --------------------------------------------------------
+
+class Display
+! Provides the functions needed for the display of information. !
+services
+	addJob				! Add a job. !;
+	outputStatusTable		! Output the status table. !;
+	outputSummary			! Output the summary. !;
+	outputIterationNumber		! Output the iteration number. !;
+	outputAddedToWaitingList	! Output the vehicle added to the waiting list message. !;
+	outputAssignedToMechanic	! Output the vehicle assigned to a mechanic message. !;
+	outputRepairedByMechanic	! Output the vehicle repaired by named mechanic message. !;
+end
+#exclude
+
+@ --------------------------------------------------------
+
+class Menu
+! Displays and manages the menu. !
+services
+	displayMenu		! Displays the menu. !;
+	getMenuSelection	! Gets the user's menu selection. !;
+end
+#exclude
+
+@ ******************** Add your design below. ********************
+
+@ The #exclude directive is not required for your classes.
+
+
+@ RULES FOR EVERYONE
+@ - Write only between your own heading and the next one.
+@ - I've included what your class design must cover in comments based on the backstory in the assignment pdf.
+@ - Every class and every service needs a document comment, placed before the semicolon.
+@ - Services are names only such as cost, not getCost() or int cost.
+@ - Run the -s check before you push to the repo.
+@ - New services/uses will need to be added above once below is complete, to be done by Group Member 5.
+
+
+@ ******************  Group Member 1: Vehicles *******************
+@ - The repair cost for each type and model.
+@ - The cost of parts for each type and model.
+@ - The minimum time to repair for each type and model.
+
+
+
+@ ******************    Kassidee: Damage       ********************
+class Damage
+! Manages the weather types !
+#abstract
+services
+	cost 			! Returns the cost to repair the damage!;
+	timeMultiplier  ! Returns the extra time multiplier for weather damage!;
+end
+
+class Pothole
+! Contains the details for each mechanic. !
+expands Damage
+services
+	size 			! Returns the size of the pothole!;
+end
+
+class WeatherDamage
+! Contains info about specific types of damage caused by the elements. !
+services
+	weatherType 	! Returns the type of weather that cause the damage !;
+end
+
+
+@ ******************  Group Member 3: Mechanics ******************
+@ - Cost per hour for each experience level.
+@ - Minimum time to repair for each experience level.
+@ - Search the mechanics in listed order for the first available one.
+@ - The waiting list for where a vehicle goes when no mechanic is available,
+@   and how it leaves when a mechanic becomes available.
+
+
+
+@ ******************  Group Member 4: Jobs ************************
+@ - The job record: vehicle type, name of the mechanic, total cost, time for completion.
+@ - The database of job records showing a job is created and stored before any repair is made.
+@ - Total time which is essentially the mechanic's minimum time and the vehicle's minimum time,
+@   plus if the damage was caused by the elements.
+@ - Total cost, basically cost of the damage + cost of the mechanic + repair cost of the vehicle type
+@   + cost of the parts for the vehicle type.
+@ - Cost of the mechanic.
+
+
+@ ******************  		  End 		   ************************
