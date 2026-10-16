@@ -124,14 +124,38 @@ end
 
 
 
-@ ******************  Group Member 4: Jobs ************************
+@ ******************  Kalista: Jobs ************************
 @ - The job record: vehicle type, name of the mechanic, total cost, time for completion.
+class Job
+! Represents a job repair record. !
+services 
+	vehicleType	! Returns the type of vehicle. !;
+	mechanicName	! Returns the name of the mechanic. !;
+	completionTime	! Returns the time it takes to complete a job. !;
+	totalCost	! Returns the total cost of the job repair. !;
+end
+ 
 @ - The database of job records showing a job is created and stored before any repair is made.
+class JobDatabase
+! Stores the repair job records. !
+uses
+	Job with 0 to * label stores 	!Stores zero or more job records. !;
+end
+
+services
+	storeJob		! Stores a job to the database. !;
+end
 @ - Total time which is essentially the mechanic's minimum time and the vehicle's minimum time,
 @   plus if the damage was caused by the elements.
 @ - Total cost, basically cost of the damage + cost of the mechanic + repair cost of the vehicle type
 @   + cost of the parts for the vehicle type.
 @ - Cost of the mechanic.
+class RepairCalculations
+! Calculates the time and costs for a vehicle repair. !
+services
+	totalTime		! Calculates the total time requires for the repair. !;
+	mechanicCost		! Calculates the cost of the mechanic. !;
+	calculatetotalCost	! Calculates the cost of the repair. !;
 
 
 @ ******************  		  End 		   ************************
