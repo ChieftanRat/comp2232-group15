@@ -85,10 +85,26 @@ end
 @ - New services/uses will need to be added above once below is complete, to be done by Group Member 5.
 
 
-@ ******************  Group Member 1: Vehicles *******************
+@ ******************  Muhammad 1: Vehicles *******************
 @ - The repair cost for each type and model.
 @ - The cost of parts for each type and model.
 @ - The minimum time to repair for each type and model.
+
+@change the name so it wouldnt get confused with the original vehicle class
+
+class VehicleRepairDetails
+! Contains repair cost, parts cost, and minimum repair time information for different vehicle types and models. !
+services 
+
+	repairCost
+	! Returns the the calculated cost of repairing the giving vehicle. ! ;
+
+	partCost
+	! returns the cost of parts for each type and model. ! ;
+
+	minRepairTime
+	! return the minimum time it would take for each type and model !;
+end
 
 
 
