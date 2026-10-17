@@ -131,13 +131,84 @@ services
 end
 
 
-@ ******************  Group Member 3: Mechanics ******************
+@ ******************  Katrice: Mechanics ******************
 @ - Cost per hour for each experience level.
+@ Novice = $20 per hour.
+@ Intermediate = $60 per hour.
+@ Expert = $100 per hour.
+
+class MechanicHourlyRate
+! Determines the hourly rate of a mechanic based on their experience level. !
+
+services
+    getHourlyRate
+    ! Returns 20 for novice, 60 for intermediate, and 100 for expert mechanics. !;
+
+    calculateLabourCost
+    ! Calculates the total labour cost by multiplying the hourly rate by 8 hours and the number of repair days. !;
+end
+
 @ - Minimum time to repair for each experience level.
+@ Novice = 20 days.
+@ Intermediate = 15 days.
+@ Expert = 10 days.
+
+class MechanicRepairTime
+! Determines the minimum repair time based on the mechanic's experience level. !
+
+services
+    getMinimumRepairTime
+    ! Returns 20 days for novice, 15 days for intermediate, and 10 days for expert mechanics. !;
+
+    calculateRepairTime
+    ! Determines the repair time by selecting the greater of the mechanic's minimum repair time and the vehicle's minimum repair time. !;
+end
+
 @ - Search the mechanics in listed order for the first available one.
+! Searches mechanics in their listed order and assigns the first available mechanic to a vehicle. !
+
+uses
+    Mechanic with 1 to * label searches
+    ! Searches the list of mechanics to locate the first available mechanic. !;
+end
+
+services
+    findAvailableMechanic
+    ! Searches the mechanics in their listed order and returns the first available mechanic. !;
+
+    assignMechanic
+    ! Assigns the selected mechanic to the vehicle and marks the mechanic as unavailable. !;
+
+    releaseMechanic
+    ! Marks the mechanic as available when the assigned vehicle has been repaired. !;
+end
+
 @ - The waiting list for where a vehicle goes when no mechanic is available,
 @   and how it leaves when a mechanic becomes available.
+class VehicleWaitingList
+! Maintains a waiting list of vehicles that cannot be repaired immediately because all mechanics are busy. !
 
+uses
+    Vehicle with 0 to * label contains
+    ! Contains vehicles waiting for an available mechanic. !;
+end
+
+services
+    addVehicle
+    ! Adds a vehicle to the waiting list when no mechanic is available. !;
+
+    removeVehicle
+    ! Removes the first vehicle from the waiting list when a mechanic becomes available. !;
+
+    hasWaitingVehicles
+    ! Checks whether there are any vehicles in the waiting list. !;
+
+    getWaitingCount
+    ! Returns the number of vehicles currently waiting for repair. !;
+
+    assignWaitingVehicle
+    ! Assigns the first waiting vehicle to a mechanic who has completed a repair. !;
+end
 
 
 @ ******************  Kalista: Jobs ************************
