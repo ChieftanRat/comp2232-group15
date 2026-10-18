@@ -110,7 +110,7 @@ end
 
 @ ******************    Kassidee: Damage       ********************
 class Damage
-! Manages the weather types !
+! Manages any damage to a vehicle. !
 #abstract
 services
 	cost 			! Returns the cost to repair the damage!;
@@ -118,18 +118,24 @@ services
 end
 
 class Pothole
-! Contains the details for each mechanic. !
+! Contains the details for each pothole. !
 expands Damage
 services
 	size 			! Returns the size of the pothole!;
 end
 
 class WeatherDamage
-! Contains info about specific types of damage caused by the elements. !
+! Contains info about different types of damage caused by the elements. !
+expands Damage
 services
 	weatherType 	! Returns the type of weather that cause the damage !;
 end
 
+class CollisionDamage
+! Contains info about damage caused by an impact to one or more parts.  !
+services'
+	parts			! Returns the damaged parts. !
+end
 
 @ ******************  Katrice: Mechanics ******************
 @ - Cost per hour for each experience level.
