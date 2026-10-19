@@ -165,6 +165,7 @@ services
 end
 
 @ - Search the mechanics in listed order for the first available one.
+class MechanicAssignment
 ! Searches mechanics in their listed order and assigns the first available mechanic to a vehicle. !
 
 uses
@@ -242,7 +243,7 @@ class RepairCalculations
 services
 	totalTime		! Calculates the total time requires for the repair. !;
 	mechanicCost		! Calculates the cost of the mechanic. !;
-	calculatetotalCost	! Calculates the cost of the repair. !;
-
+	calculateTotalCost	! Calculates the cost of the repair. !;
+end
 
 @ ******************  		  End 		   ************************
