@@ -1,0 +1,127 @@
+
+Total number of classes: 18
+
+List of Classes
+---------------
+
+Simulation
+Shop
+Mechanic
+Vehicle
+Display
+Menu
+VehicleRepairDetails
+Damage
+Pothole
+WeatherDamage
+CollisionDamage
+MechanicHourlyRate
+MechanicRepairTime
+MechanicAssignment
+VehicleWaitingList
+Job
+JobDatabase
+RepairCalculations
+
+
+
+Total number of unused classes: 11
+
+List of Unused Classes
+----------------------
+
+Simulation
+Shop
+Display
+Menu
+Pothole
+WeatherDamage
+CollisionDamage
+MechanicAssignment
+VehicleWaitingList
+JobDatabase
+RepairCalculations
+
+
+
+Classes Providing No Services
+-----------------------------
+
+Simulation
+
+
+
+List of Expansions
+------------------
+
+Pothole expands Damage
+WeatherDamage expands Damage
+CollisionDamage expands Damage
+
+
+
+List of Used Classes
+--------------------
+
+Simulation reuses Shop
+Shop reuses Mechanic, Vehicle, Display, Menu, MechanicAssignment, VehicleWaitingList, JobDatabase, RepairCalculations
+MechanicAssignment reuses Mechanic
+VehicleWaitingList reuses Vehicle
+JobDatabase reuses Job
+RepairCalculations reuses Damage, MechanicHourlyRate, MechanicRepairTime, VehicleRepairDetails
+
+
+
+List of Services Provided
+-------------------------
+
+Shop provides simulate
+Mechanic provides name, id, experience
+Vehicle provides company, type, model, damage
+Display provides addJob, outputStatusTable, outputSummary, outputIterationNumber, outputAddedToWaitingList, outputAssignedToMechanic, outputRepairedByMechanic
+Menu provides displayMenu, getMenuSelection
+VehicleRepairDetails provides repairCost, partCost, minRepairTime
+Damage provides cost, timeMultiplier
+Pothole provides size
+WeatherDamage provides weatherType
+CollisionDamage provides parts
+MechanicHourlyRate provides getHourlyRate, calculateLabourCost
+MechanicRepairTime provides getMinimumRepairTime, calculateRepairTime
+MechanicAssignment provides findAvailableMechanic, assignMechanic, releaseMechanic
+VehicleWaitingList provides addVehicle, removeVehicle, hasWaitingVehicles, getWaitingCount, assignWaitingVehicle
+Job provides vehicleType, mechanicName, completionTime, totalCost
+JobDatabase provides storeJob
+RepairCalculations provides totalTime, mechanicCost, calculateTotalCost
+
+
+
+Classes Missing Class Comments
+------------------------------
+
+
+
+
+List of Uses Without Comments
+-----------------------------
+
+
+
+
+List of Services Without Comments
+---------------------------------
+
+
+
+
+List of Undefined Used Classes
+------------------------------
+
+
+
+
+Naming Scheme Violations
+------------------------
+
+
+
+
