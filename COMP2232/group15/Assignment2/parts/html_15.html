@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SCDL Documentation</title>
+<style>
+h1{
+font-weight: bold;
+font-family: Verdana, Geneva, Tahoma, sans-serif
+}
+
+h2{
+font-weight: bold;
+font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h3{
+font-weight: bold;
+font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+p{
+font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+table{
+font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+table {
+border-collapse: collapse;
+border: 2px solid rgb(140 140 140);
+font-family: sans-serif;
+font-size 0.8rem;
+letter-spacing: 1px;
+}
+
+caption{
+caption-side: top;
+padding: 10px;
+}
+
+th,
+td {
+border: 1px solid rgb(160 160 160);
+padding: 8px 10px;
+}
+</style>
+</head>
+<body>
+<h2>All Classes</h2>
+<p>
+<table>
+<caption><b>Classes</b></caption>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<tr>
+<tr>
+<td><a href="#class1">Simulation</a></td>
+<td> Contains the main method for running the simulation. </td>
+</tr>
+<tr>
+<td><a href="#class2">Shop</a></td>
+<td> Manages the shop. </td>
+</tr>
+<tr>
+<td><a href="#class3">Mechanic</a></td>
+<td> Contains the details for each mechanic. </td>
+</tr>
+<tr>
+<td><a href="#class4">Vehicle</a></td>
+<td> Contains information about specific types of vehicles. </td>
+</tr>
+<tr>
+<td><a href="#class5">Display</a></td>
+<td> Provides the functions needed for the display of information. </td>
+</tr>
+<tr>
+<td><a href="#class6">Menu</a></td>
+<td> Displays and manages the menu. </td>
+</tr>
+<tr>
+<td><a href="#class7">VehicleRepairDetails</a></td>
+<td> Contains repair cost, parts cost, and minimum repair time information for different vehicle types and models. </td>
+</tr>
+<tr>
+<td><a href="#class8">Damage</a></td>
+<td> Manages any damage to a vehicle. </td>
+</tr>
+<tr>
+<td><a href="#class9">Pothole</a></td>
+<td> Contains the details for each pothole. </td>
+</tr>
+<tr>
+<td><a href="#class10">WeatherDamage</a></td>
+<td> Contains info about different types of damage caused by the elements. </td>
+</tr>
+<tr>
+<td><a href="#class11">CollisionDamage</a></td>
+<td> Contains info about damage caused by an impact to one or more parts.  </td>
+</tr>
+<tr>
+<td><a href="#class12">MechanicHourlyRate</a></td>
+<td> Determines the hourly rate of a mechanic based on their experience level. </td>
+</tr>
+<tr>
+<td><a href="#class13">MechanicRepairTime</a></td>
+<td> Determines the minimum repair time based on the mechanic's experience level. </td>
+</tr>
+<tr>
+<td><a href="#class14">MechanicAssignment</a></td>
+<td> Searches mechanics in their listed order and assigns the first available mechanic to a vehicle. </td>
+</tr>
+<tr>
+<td><a href="#class15">VehicleWaitingList</a></td>
+<td> Maintains a waiting list of vehicles that cannot be repaired immediately because all mechanics are busy. </td>
+</tr>
+<tr>
+<td><a href="#class16">Job</a></td>
+<td> Represents a job repair record. </td>
+</tr>
+<tr>
+<td><a href="#class17">JobDatabase</a></td>
+<td> Stores the repair job records. </td>
+</tr>
+<tr>
+<td><a href="#class18">RepairCalculations</a></td>
+<td> Calculates the time and costs for a vehicle repair. </td>
+</tr>
+</table>
+</p>
+<hr/>
+<section id="class1" style="text-align:left;">
+<h2>Simulation</h2>
+<p>
+ Contains the main method for running the simulation. 
+
+<table>
+<caption><b>Uses</b></caption>
+<tr>
+<th>Name</th>
+<th>Relationship</th>
+<th>Description</th>
+<tr>
+<tr>
+<td>
+Shop
+</td>
+<td>
+1 to 1 label simulates
+</td>
+<td>
+ Simulates the shop. 
+</td>
+</tr>
+</table>
+</p>
+</section>
+<hr>
+<section id="class2" style="text-align:left;">
+<h2>Shop</h2>
+<p>
+ Manages the shop. 
+
+<table>
+<caption><b>Uses</b></caption>
+<tr>
+<th>Name</th>
+<th>Relationship</th>
+<th>Description</th>
+<tr>
+<tr>
+<td>
+Mechanic
+</td>
+<td>
+1 to * label employs
+</td>
+<td>
+ Available mechanics. 
+</td>
+</tr>
+<tr>
+<td>
+Vehicle
+</td>
+<td>
+0 to * label repairs
+</td>
+<td>
+ Vehicles that need repair. 
+</td>
+</tr>
+<tr>
+<td>
+Display
+</td>
+<td>
+1 to 1 label uses
+</td>
+<td>
+ Displays the information. 
+</td>
+</tr>
+<tr>
+<td>
+Menu
+</td>
+<td>
+1 to 1 label displays
+</td>
+<td>
+ Manages the menu. 
+</td>
+</tr>
+<tr>
+<td>
+MechanicAssignment
+</td>
+<td>
+1 to 1 label assigns
+</td>
+<td>
+ Manages the assignment of mechanics. 
+</td>
+</tr>
+<tr>
+<td>
+VehicleWaitingList
+</td>
+<td>
+1 to 1 label maintains
+</td>
+<td>
+ Maintains vehicles waiting for a mechanic. 
+</td>
+</tr>
+<tr>
+<td>
+JobDatabase
+</td>
+<td>
+1 to 1 label records
+</td>
+<td>
+ Stores the repair job records. 
+</td>
+</tr>
+<tr>
+<td>
+RepairCalculations
+</td>
+<td>
+1 to 1 label calculates
+</td>
+<td>
+ Calculates repair costs and time. 
+</td>
+</tr>
+</table>
+<br><table>
+<caption><b>Services</b></caption>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<tr>
+<tr>
+<td>
+simulate
+</td>
+<td>
+ Runs the simulation. 
+</td>
+</tr>
+</table>
+</p>
+</section>
+<hr>
+<section id="class3" style="text-align:left;">
+<h2>Mechanic</h2>
+<p>
+ Contains the details for each mechanic. 
+
+<br><table>
+<caption><b>Services</b></caption>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<tr>
+<tr>
+<td>
+name
+</td>
+<td>
+ Name of the mechanic. 
+</td>
+</tr>
+<tr>
+<td>
+id
+</td>
+<td>
+ The mechanic ID. 
+</td>
+</tr>
+<tr>
+<td>
+experience
+</td>
+<td>
+ The experience level of the mechanic. 
+</td>
+</tr>
+</table>
+</p>
+</section>
+<hr>
+<section id="class4" style="text-align:left;">
+<h2>Vehicle</h2>
+<p>
+ Contains information about specific types of vehicles. 
+
+<br><table>
+<caption><b>Services</b></caption>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<tr>
+<tr>
+<td>
+company
+</td>
+<td>
+ The company that manufactures the vehicle. 
+</td>
+</tr>
+<tr>
+<td>
+type
+</td>
+<td>
+ The type of vehicle such as car or van. 
+</td>
+</tr>
+<tr>
+<td>
+model
+</td>
+<td>
+ The model of the vehicle. 
+</td>
+</tr>
+<tr>
+<td>
+damage
+</td>
+<td>
+ The type of damage. 
+</td>
+</tr>
+</table>
+</p>
+</section>
+<hr>
+<section id="class5" style="text-align:left;">
+<h2>Display</h2>
+<p>
+ Provides the functions needed for the display of information. 
+
+<br><table>
+<caption><b>Services</b></caption>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<tr>
+<tr>
+<td>
+addJob
+</td>
+<td>
+ Add a job. 
+</td>
+</tr>
+<tr>
+<td>
+outputStatusTable
+</td>
+<td>
+ Output the status table. 
+</td>
+</tr>
+<tr>
+<td>
+outputSummary
+</td>
+<td>
+ Output the summary. 
+</td>
+</tr>
+<tr>
+<td>
+outputIterationNumber
+</td>
+<td>
+ Output the iteration number. 
+</td>
+</tr>
+<tr>
+<td>
+outputAddedToWaitingList
+</td>
+<td>
+ Output the vehicle added to the waiting list message. 
+</td>
+</tr>
+<tr>
+<td>
+outputAssignedToMechanic
+</td>
+<td>
+ Output the vehicle assigned to a mechanic message. 
+</td>
+</tr>
+<tr>
+<td>
+outputRepairedByMechanic
+</td>
+<td>
+ Output the vehicle repaired by named mechanic message. 
+</td>
+</tr>
+</table>
+</p>
+</section>
+<hr>
+<section id="class6" style="text-align:left;">
+<h2>Menu</h2>
+<p>
+ Displays and manages the menu. 
+
+<br><table>
+<caption><b>Services</b></caption>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<tr>
+<tr>
+<td>
+displayMenu
+</td>
+<td>
+ Displays the menu. 
+</td>
+</tr>
+<tr>
+<td>
+getMenuSelection
+</td>
+<td>
+ Gets the user's menu selection. 
+</td>
+</tr>
+</table>
+</p>
+</section>
+<hr>
+<section id="class7" style="text-align:left;">
+<h2>VehicleRepairDetails</h2>
+<p>
+ Contains repair cost, parts cost, and minimum repair time information for different vehicle types and models. 
+
+<br><table>
+<caption><b>Services</b></caption>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<tr>
+<tr>
+<td>
+repairCost
+</td>
+<td>
+ Returns the calculated cost of repairing the giving vehicle. 
+</td>
+</tr>
+<tr>
+<td>
+partCost
+</td>
+<td>
+ Returns the cost of parts for each type and model. 
+</td>
+</tr>
+<tr>
+<td>
+minRepairTime
+</td>
+<td>
+ Return the minimum time it would take for each type and model 
+</td>
+</tr>
+</table>
+</p>
+</section>
+<hr>
+<section id="class8" style="text-align:left;">
+<h2>Damage</h2>
+<p>
+ Manages any damage to a vehicle. 
+
+<br><table>
+<caption><b>Services</b></caption>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<tr>
+<tr>
+<td>
+cost
+</td>
+<td>
+ Returns the cost to repair the damage
+</td>
+</tr>
+<tr>
+<td>
+timeMultiplier
+</td>
+<td>
+ Returns the extra time multiplier for weather damage
+</td>
+</tr>
+</table>
+</p>
+</section>
+<hr>
+<section id="class9" style="text-align:left;">
+<h2>Pothole</h2>
+<p>
+ Contains the details for each pothole. 
+
+<br><br><b>Expands:</b> Damage
+<br><table>
+<caption><b>Services</b></caption>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<tr>
+<tr>
+<td>
+size
+</td>
+<td>
+ Returns the size of the pothole
+</td>
+</tr>
+</table>
+</p>
+</section>
+<hr>
+<section id="class10" style="text-align:left;">
+<h2>WeatherDamage</h2>
+<p>
+ Contains info about different types of damage caused by the elements. 
+
+<br><br><b>Expands:</b> Damage
+<br><table>
+<caption><b>Services</b></caption>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<tr>
+<tr>
+<td>
+weatherType
+</td>
+<td>
+ Returns the type of weather that cause the damage 
+</td>
+</tr>
+</table>
+</p>
+</section>
+<hr>
+<section id="class11" style="text-align:left;">
+<h2>CollisionDamage</h2>
+<p>
+ Contains info about damage caused by an impact to one or more parts.  
+
+<br><br><b>Expands:</b> Damage
+<br><table>
+<caption><b>Services</b></caption>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<tr>
+<tr>
+<td>
+parts
+</td>
+<td>
+ Returns the damaged parts. 
+</td>
+</tr>
+</table>
+</p>
+</section>
+<hr>
+<section id="class12" style="text-align:left;">
+<h2>MechanicHourlyRate</h2>
+<p>
+ Determines the hourly rate of a mechanic based on their experience level. 
+
+<br><table>
+<caption><b>Services</b></caption>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<tr>
+<tr>
+<td>
+getHourlyRate
+</td>
+<td>
+ Returns 20 for novice, 60 for intermediate, and 100 for expert mechanics. 
+</td>
+</tr>
+<tr>
+<td>
+calculateLabourCost
+</td>
+<td>
+ Calculates the total labour cost by multiplying the hourly rate by 8 hours and the number of repair days. 
+</td>
+</tr>
+</table>
+</p>
+</section>
+<hr>
+<section id="class13" style="text-align:left;">
+<h2>MechanicRepairTime</h2>
+<p>
+ Determines the minimum repair time based on the mechanic's experience level. 
+
+<br><table>
+<caption><b>Services</b></caption>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<tr>
+<tr>
+<td>
+getMinimumRepairTime
+</td>
+<td>
+ Returns 20 days for novice, 15 days for intermediate, and 10 days for expert mechanics. 
+</td>
+</tr>
+<tr>
+<td>
+calculateRepairTime
+</td>
+<td>
+ Determines the repair time by selecting the greater of the mechanic's minimum repair time and the vehicle's minimum repair time. 
+</td>
+</tr>
+</table>
+</p>
+</section>
+<hr>
+<section id="class14" style="text-align:left;">
+<h2>MechanicAssignment</h2>
+<p>
+ Searches mechanics in their listed order and assigns the first available mechanic to a vehicle. 
+
+<table>
+<caption><b>Uses</b></caption>
+<tr>
+<th>Name</th>
+<th>Relationship</th>
+<th>Description</th>
+<tr>
+<tr>
+<td>
+Mechanic
+</td>
+<td>
+1 to * label searches
+</td>
+<td>
+ Searches the list of mechanics to locate the first available mechanic. 
+</td>
+</tr>
+</table>
+<br><table>
+<caption><b>Services</b></caption>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<tr>
+<tr>
+<td>
+findAvailableMechanic
+</td>
+<td>
+ Searches the mechanics in their listed order and returns the first available mechanic. 
+</td>
+</tr>
+<tr>
+<td>
+assignMechanic
+</td>
+<td>
+ Assigns the selected mechanic to the vehicle and marks the mechanic as unavailable. 
+</td>
+</tr>
+<tr>
+<td>
+releaseMechanic
+</td>
+<td>
+ Marks the mechanic as available when the assigned vehicle has been repaired. 
+</td>
+</tr>
+</table>
+</p>
+</section>
+<hr>
+<section id="class15" style="text-align:left;">
+<h2>VehicleWaitingList</h2>
+<p>
+ Maintains a waiting list of vehicles that cannot be repaired immediately because all mechanics are busy. 
+
+<table>
+<caption><b>Uses</b></caption>
+<tr>
+<th>Name</th>
+<th>Relationship</th>
+<th>Description</th>
+<tr>
+<tr>
+<td>
+Vehicle
+</td>
+<td>
+0 to * label contains
+</td>
+<td>
+ Contains vehicles waiting for an available mechanic. 
+</td>
+</tr>
+</table>
+<br><table>
+<caption><b>Services</b></caption>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<tr>
+<tr>
+<td>
+addVehicle
+</td>
+<td>
+ Adds a vehicle to the waiting list when no mechanic is available. 
+</td>
+</tr>
+<tr>
+<td>
+removeVehicle
+</td>
+<td>
+ Removes the first vehicle from the waiting list when a mechanic becomes available. 
+</td>
+</tr>
+<tr>
+<td>
+hasWaitingVehicles
+</td>
+<td>
+ Checks whether there are any vehicles in the waiting list. 
+</td>
+</tr>
+<tr>
+<td>
+getWaitingCount
+</td>
+<td>
+ Returns the number of vehicles currently waiting for repair. 
+</td>
+</tr>
+<tr>
+<td>
+assignWaitingVehicle
+</td>
+<td>
+ Assigns the first waiting vehicle to a mechanic who has completed a repair. 
+</td>
+</tr>
+</table>
+</p>
+</section>
+<hr>
+<section id="class16" style="text-align:left;">
+<h2>Job</h2>
+<p>
+ Represents a job repair record. 
+
+<br><table>
+<caption><b>Services</b></caption>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<tr>
+<tr>
+<td>
+vehicleType
+</td>
+<td>
+ Returns the type of vehicle. 
+</td>
+</tr>
+<tr>
+<td>
+mechanicName
+</td>
+<td>
+ Returns the name of the mechanic. 
+</td>
+</tr>
+<tr>
+<td>
+completionTime
+</td>
+<td>
+ Returns the time it takes to complete a job. 
+</td>
+</tr>
+<tr>
+<td>
+totalCost
+</td>
+<td>
+ Returns the total cost of the job repair. 
+</td>
+</tr>
+</table>
+</p>
+</section>
+<hr>
+<section id="class17" style="text-align:left;">
+<h2>JobDatabase</h2>
+<p>
+ Stores the repair job records. 
+
+<table>
+<caption><b>Uses</b></caption>
+<tr>
+<th>Name</th>
+<th>Relationship</th>
+<th>Description</th>
+<tr>
+<tr>
+<td>
+Job
+</td>
+<td>
+0 to * label stores
+</td>
+<td>
+Stores zero or more job records. 
+</td>
+</tr>
+</table>
+<br><table>
+<caption><b>Services</b></caption>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<tr>
+<tr>
+<td>
+storeJob
+</td>
+<td>
+ Stores a job to the database. 
+</td>
+</tr>
+</table>
+</p>
+</section>
+<hr>
+<section id="class18" style="text-align:left;">
+<h2>RepairCalculations</h2>
+<p>
+ Calculates the time and costs for a vehicle repair. 
+
+<table>
+<caption><b>Uses</b></caption>
+<tr>
+<th>Name</th>
+<th>Relationship</th>
+<th>Description</th>
+<tr>
+<tr>
+<td>
+Damage
+</td>
+<td>
+1 to 1 label uses
+</td>
+<td>
+ Provides the damage cost and time multiplier for the repair. 
+</td>
+</tr>
+<tr>
+<td>
+MechanicHourlyRate
+</td>
+<td>
+1 to 1 label uses
+</td>
+<td>
+ Provides the mechanic's hourly rate. 
+</td>
+</tr>
+<tr>
+<td>
+MechanicRepairTime
+</td>
+<td>
+1 to 1 label uses
+</td>
+<td>
+ Provides the mechanic's minimum repair time. 
+</td>
+</tr>
+<tr>
+<td>
+VehicleRepairDetails
+</td>
+<td>
+1 to 1 label uses
+</td>
+<td>
+ Provides the vehicle repair cost, parts cost and minimum repair time. 
+</td>
+</tr>
+</table>
+<br><table>
+<caption><b>Services</b></caption>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<tr>
+<tr>
+<td>
+totalTime
+</td>
+<td>
+ Calculates the total time required for the repair. 
+</td>
+</tr>
+<tr>
+<td>
+mechanicCost
+</td>
+<td>
+ Calculates the cost of the mechanic. 
+</td>
+</tr>
+<tr>
+<td>
+calculateTotalCost
+</td>
+<td>
+ Calculates the cost of the repair. 
+</td>
+</tr>
+</table>
+</p>
+</section>
+<hr>
+</body>
+</html>

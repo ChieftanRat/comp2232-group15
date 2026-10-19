@@ -1,0 +1,119 @@
+``` mermaid
+
+classDiagram
+	class Simulation{
+	}
+
+	class Shop{
+		simulate()
+	}
+
+	class Mechanic{
+		name()
+		id()
+		experience()
+	}
+
+	class Vehicle{
+		company()
+		type()
+		model()
+		damage()
+	}
+
+	class Display{
+		addJob()
+		outputStatusTable()
+		outputSummary()
+		outputIterationNumber()
+		outputAddedToWaitingList()
+		outputAssignedToMechanic()
+		outputRepairedByMechanic()
+	}
+
+	class Menu{
+		displayMenu()
+		getMenuSelection()
+	}
+
+	class VehicleRepairDetails{
+		repairCost()
+		partCost()
+		minRepairTime()
+	}
+
+	class Damage{
+		cost()
+		timeMultiplier()
+	}
+
+	class Pothole{
+		size()
+	}
+
+	class WeatherDamage{
+		weatherType()
+	}
+
+	class CollisionDamage{
+		parts()
+	}
+
+	class MechanicHourlyRate{
+		getHourlyRate()
+		calculateLabourCost()
+	}
+
+	class MechanicRepairTime{
+		getMinimumRepairTime()
+		calculateRepairTime()
+	}
+
+	class MechanicAssignment{
+		findAvailableMechanic()
+		assignMechanic()
+		releaseMechanic()
+	}
+
+	class VehicleWaitingList{
+		addVehicle()
+		removeVehicle()
+		hasWaitingVehicles()
+		getWaitingCount()
+		assignWaitingVehicle()
+	}
+
+	class Job{
+		vehicleType()
+		mechanicName()
+		completionTime()
+		totalCost()
+	}
+
+	class JobDatabase{
+		storeJob()
+	}
+
+	class RepairCalculations{
+		totalTime()
+		mechanicCost()
+		calculateTotalCost()
+	}
+
+	Simulation "1" --> "1" Shop : simulates
+	Shop "1" --> "*" Mechanic : employs
+	Shop "0" --> "*" Vehicle : repairs
+	Shop "1" --> "1" Display : uses
+	Shop "1" --> "1" Menu : displays
+	Shop "1" --> "1" MechanicAssignment : assigns
+	Shop "1" --> "1" VehicleWaitingList : maintains
+	Shop "1" --> "1" JobDatabase : records
+	Shop "1" --> "1" RepairCalculations : calculates
+	MechanicAssignment "1" --> "*" Mechanic : searches
+	VehicleWaitingList "0" --> "*" Vehicle : contains
+	JobDatabase "0" --> "*" Job : stores
+	RepairCalculations "1" --> "1" Damage : uses
+	RepairCalculations "1" --> "1" MechanicHourlyRate : uses
+	RepairCalculations "1" --> "1" MechanicRepairTime : uses
+	RepairCalculations "1" --> "1" VehicleRepairDetails : uses
+```
