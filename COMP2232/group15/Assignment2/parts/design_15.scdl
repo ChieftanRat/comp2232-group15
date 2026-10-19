@@ -77,23 +77,7 @@ end
 
 @ ******************** Add your design below. ********************
 
-@ The #exclude directive is not required for your classes.
-
-
-@ RULES FOR EVERYONE
-@ - Write only between your own heading and the next one.
-@ - I've included what your class design must cover in comments based on the backstory in the assignment pdf.
-@ - Every class and every service needs a document comment, placed before the semicolon.
-@ - Services are names only such as cost, not getCost() or int cost.
-@ - Run the -s check before you push to the repo.
-@ - New services/uses will need to be added above once below is complete, to be done by Group Member 5.
-
-
 @ ******************  Muhammad 1: Vehicles *******************
-@ - The repair cost for each type and model.
-@ - The cost of parts for each type and model.
-@ - The minimum time to repair for each type and model.
-
 
 class VehicleRepairDetails
 ! Contains repair cost, parts cost, and minimum repair time information for different vehicle types and models. !
@@ -108,8 +92,6 @@ services
 	minRepairTime
 	! Return the minimum time it would take for each type and model !;
 end
-
-
 
 @ ******************    Kassidee: Damage       ********************
 class Damage
@@ -142,10 +124,6 @@ services
 end
 
 @ ******************  Katrice: Mechanics ******************
-@ - Cost per hour for each experience level.
-@ Novice = $20 per hour.
-@ Intermediate = $60 per hour.
-@ Expert = $100 per hour.
 
 class MechanicHourlyRate
 ! Determines the hourly rate of a mechanic based on their experience level. !
@@ -158,11 +136,6 @@ services
     ! Calculates the total labour cost by multiplying the hourly rate by 8 hours and the number of repair days. !;
 end
 
-@ - Minimum time to repair for each experience level.
-@ Novice = 20 days.
-@ Intermediate = 15 days.
-@ Expert = 10 days.
-
 class MechanicRepairTime
 ! Determines the minimum repair time based on the mechanic's experience level. !
 
@@ -174,7 +147,6 @@ services
     ! Determines the repair time by selecting the greater of the mechanic's minimum repair time and the vehicle's minimum repair time. !;
 end
 
-@ - Search the mechanics in listed order for the first available one.
 class MechanicAssignment
 ! Searches mechanics in their listed order and assigns the first available mechanic to a vehicle. !
 
@@ -194,8 +166,6 @@ services
     ! Marks the mechanic as available when the assigned vehicle has been repaired. !;
 end
 
-@ - The waiting list for where a vehicle goes when no mechanic is available,
-@   and how it leaves when a mechanic becomes available.
 class VehicleWaitingList
 ! Maintains a waiting list of vehicles that cannot be repaired immediately because all mechanics are busy. !
 
@@ -221,9 +191,7 @@ services
     ! Assigns the first waiting vehicle to a mechanic who has completed a repair. !;
 end
 
-
 @ ******************  Kalista: Jobs ************************
-@ - The job record: vehicle type, name of the mechanic, total cost, time for completion.
 class Job
 ! Represents a job repair record. !
 services 
@@ -233,7 +201,6 @@ services
 	totalCost	! Returns the total cost of the job repair. !;
 end
  
-@ - The database of job records showing a job is created and stored before any repair is made.
 class JobDatabase
 ! Stores the repair job records. !
 uses
@@ -243,11 +210,7 @@ end
 services
 	storeJob		! Stores a job to the database. !;
 end
-@ - Total time which is essentially the mechanic's minimum time and the vehicle's minimum time,
-@   plus if the damage was caused by the elements.
-@ - Total cost, basically cost of the damage + cost of the mechanic + repair cost of the vehicle type
-@   + cost of the parts for the vehicle type.
-@ - Cost of the mechanic.
+
 class RepairCalculations
 ! Calculates the time and costs for a vehicle repair. !
 uses
