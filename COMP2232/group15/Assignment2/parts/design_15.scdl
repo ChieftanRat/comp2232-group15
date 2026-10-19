@@ -16,6 +16,10 @@ uses
 	Vehicle with 0 to * label repairs	! Vehicles that need repair. !;
 	Display with 1 label uses		! Displays the information. !;
 	Menu with 1 label displays		! Manages the menu. !;
+	MechanicAssignment with 1 label assigns		! Manages the assignment of mechanics. !;
+	VehicleWaitingList with 1 label maintains	! Maintains vehicles waiting for a mechanic. !;
+	JobDatabase with 1 label records			! Stores the repair job records. !;
+	RepairCalculations with 1 label calculates	! Calculates repair costs and time. !;
 end
 services
 	simulate				! Runs the simulation. !;
@@ -51,9 +55,9 @@ end
 class Display
 ! Provides the functions needed for the display of information. !
 services
-	addJob				! Add a job. !;
-	outputStatusTable		! Output the status table. !;
-	outputSummary			! Output the summary. !;
+	addJob						! Add a job. !;
+	outputStatusTable			! Output the status table. !;
+	outputSummary				! Output the summary. !;
 	outputIterationNumber		! Output the iteration number. !;
 	outputAddedToWaitingList	! Output the vehicle added to the waiting list message. !;
 	outputAssignedToMechanic	! Output the vehicle assigned to a mechanic message. !;
@@ -90,20 +94,19 @@ end
 @ - The cost of parts for each type and model.
 @ - The minimum time to repair for each type and model.
 
-@change the name so it wouldnt get confused with the original vehicle class
 
 class VehicleRepairDetails
 ! Contains repair cost, parts cost, and minimum repair time information for different vehicle types and models. !
 services 
 
 	repairCost
-	! Returns the the calculated cost of repairing the giving vehicle. ! ;
+	! Returns the calculated cost of repairing the giving vehicle. ! ;
 
 	partCost
-	! returns the cost of parts for each type and model. ! ;
+	! Returns the cost of parts for each type and model. ! ;
 
 	minRepairTime
-	! return the minimum time it would take for each type and model !;
+	! Return the minimum time it would take for each type and model !;
 end
 
 
@@ -133,7 +136,8 @@ end
 
 class CollisionDamage
 ! Contains info about damage caused by an impact to one or more parts.  !
-services'
+expands Damage
+services
 	parts			! Returns the damaged parts. !
 end
 
@@ -246,8 +250,18 @@ end
 @ - Cost of the mechanic.
 class RepairCalculations
 ! Calculates the time and costs for a vehicle repair. !
+uses
+	Damage with 1 label uses				! Provides the damage cost and time multiplier for the repair. !;
+
+	MechanicHourlyRate with 1 label uses	! Provides the mechanic's hourly rate. !;
+
+    MechanicRepairTime with 1 label uses	! Provides the mechanic's minimum repair time. !;
+
+    VehicleRepairDetails with 1 label uses	! Provides the vehicle repair cost, parts cost and minimum repair time. !;
+end
+
 services
-	totalTime		! Calculates the total time requires for the repair. !;
+	totalTime			! Calculates the total time required for the repair. !;
 	mechanicCost		! Calculates the cost of the mechanic. !;
 	calculateTotalCost	! Calculates the cost of the repair. !;
 end
