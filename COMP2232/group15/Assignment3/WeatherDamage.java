@@ -42,7 +42,11 @@ public class WeatherDamage extends Damage
 		};
 	}
 
-	@Override 
+	/**
+	 *  Returns the extra repair time multiplier for this weather damage
+	 *
+	 * @return the extra repair time multiplier
+	 */
 	public double timeMultiplier() {
 		return switch(weatherType) {
 			case DatabaseConstants.DAMAGE_WIND -> 0.2;

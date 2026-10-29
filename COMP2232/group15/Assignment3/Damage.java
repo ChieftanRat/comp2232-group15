@@ -21,17 +21,7 @@ abstract public class Damage
 	 * @return the damage repair charge
 	 */
 	public abstract double cost();
-	/**
-	 *  Returns the extra time multiplier for weather damage
-	 *
-	 * @param 
-	 *
-	 * @return zero unless a subclass specifies additional time
-	 */
-	public double timeMultiplier()
-	{
-		return 0.0;
-	}
+
 
 }
 
