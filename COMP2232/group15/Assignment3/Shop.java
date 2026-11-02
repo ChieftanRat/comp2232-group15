@@ -4,7 +4,14 @@ public class Shop
 	private Vehicle vehicles[];
 	private Display output;
 	private Menu menu;
-	
+	/** Vehicles waiting for an available mechanic. 
+	* Not yet used, 
+	*/
+	private Vehicle[] waitingVehicles;
+	/** Number of vehicles currently in the waiting list.
+	* should be updated whenever a car is added to waiting 
+	*/
+	private int waitingCount;
 	public Shop(String prompt)
 	{
 		mechanics = new Mechanic[DatabaseConstants.TOTAL_MECHANICS];
@@ -101,6 +108,24 @@ public class Shop
 			System.out.println("No vehicles are under repair");
 		}
 	}
+	/**
+	*output the total number of vehicles remaining in the vehicle list
+	*IMPORTANT waitingCount needs to be updated whenever there is a vehicle that needs repair but there is no mechanic
+	*/
+	private void totalVehiclesLeftToRepair()
+	{
+		int total = waitingCount;
+
+		for (int i = 0; i < vehicles.length; i++)
+		{
+			if (vehicles[i] != null && !vehicles[i].model().isEmpty())
+			{
+				total++;
+			}
+		}
+
+		System.out.println("There are " + total + " number of vehicles left.");
+	}
 			
 	private void run()
 	{
@@ -177,6 +202,7 @@ public class Shop
 				break;
 				
 			case Menu.MENU_OPTION_TOTAL_VEHICLES_LEFT_TO_REPAIR: 
+				totalVehiclesLeftToRepair();
 				break;
 				
 			case Menu.MENU_OPTION_TOTAL_REVENUE: 
