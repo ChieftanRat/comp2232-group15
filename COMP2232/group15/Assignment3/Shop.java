@@ -4,12 +4,9 @@ public class Shop
 	private Vehicle vehicles[];
 	private Display output;
 	private Menu menu;
-	/** Vehicles waiting for an available mechanic. 
-	* Not yet used, 
-	*/
+/** Vehicles waiting for a mechanic, in arrival order. */
 	private Vehicle[] waitingVehicles;
 	/** Number of vehicles currently in the waiting list.
-	* should be updated whenever a car is added to waiting 
 	*/
 	private int waitingCount;
 	public Shop(String prompt)
@@ -22,6 +19,9 @@ public class Shop
 		for(int i = 0; i < DatabaseConstants.TOTAL_VEHICLES; i++)
 			vehicles[i] = new Vehicle();
 
+		waitingVehicles = new Vehicle[DatabaseConstants.TOTAL_VEHICLES];
+		waitingCount = 0;
+		
 		output = new Display();
 		menu = new Menu(prompt);
 	}
@@ -85,10 +85,10 @@ public class Shop
 		boolean isVehicleFound = false;
 		//loops through the vehicles object
 		for (int i=0; i < vehicles.length; i++) {
-			String vehicleModel = vehicles[i].company() + " " + vehicles[i].model() + " " + vehicles[i].type() + " " + vehicles[i].damage();
-			//checks for elements in the vehicles array with non-empty model values
-			// damage shows as 0 due to how the vehicle.class is writing and i cant change it because of the assignment requirements. so if anyone knows how to fix this please let me know.
-			if (!vehicleModel.isEmpty()) {
+			// A vehicle moved to the waiting list is no longer in this array.
+			if (vehicles[i] != null && !vehicles[i].model().isEmpty()) {
+				String vehicleModel = vehicles[i].company() + " " + vehicles[i].model() + " " + vehicles[i].type() + " " + vehicles[i].damage();
+
 
 				if (!isVehicleFound) {
 					//purely for aesthetic purposes
@@ -101,16 +101,58 @@ public class Shop
 				isVehicleFound = true;
 			}
 		}
-		System.out.println("There is " + vehicles.length + " number of vehicles left.");
 		//checks if the boolean hasn't been changed after the loop
 		if (!isVehicleFound) {
 			//informs the user if that is the case
-			System.out.println("No vehicles are under repair");
+			System.out.println("No vehicles are being repaired.");
 		}
 	}
+
 	/**
-	*output the total number of vehicles remaining in the vehicle list
-	*IMPORTANT waitingCount needs to be updated whenever there is a vehicle that needs repair but there is no mechanic
+	 * Moves a vehicle from the vehicle list to the end of the waiting list.
+	 * Call this when no mechanic is available for the vehicle.
+	 * @param index position of the vehicle in the main vehicle array
+	 * @return true if a vehicle was moved; otherwise false
+	 */
+	private boolean addToWaitingList(int index)
+	{
+		if (index < 0 || index >= vehicles.length ||
+		    vehicles[index] == null || vehicles[index].model().isEmpty() ||
+		    waitingCount >= waitingVehicles.length)
+		{
+			return false;
+		}
+
+		waitingVehicles[waitingCount] = vehicles[index];
+		waitingCount++;
+		vehicles[index] = null;
+		return true;
+	}
+
+	/**
+	 * Removes and returns the first waiting vehicle, preserving arrival order.
+	 * Call this when a mechanic is ready to accept a waiting vehicle.
+	 * @return first waiting vehicle, or null if the list is empty
+	 */
+	private Vehicle removeFromWaitingList()
+	{
+		if (waitingCount == 0)
+		{
+			return null;
+		}
+
+		Vehicle nextVehicle = waitingVehicles[0];
+		for (int i = 1; i < waitingCount; i++)
+		{
+			waitingVehicles[i - 1] = waitingVehicles[i];
+		}
+		waitingCount--;
+		waitingVehicles[waitingCount] = null;
+		return nextVehicle;
+	}
+	/**
+	* Outputs the number of vehicles still in the main and waiting lists.
+	 * Vehicles already assigned to a mechanic will be tracked separately later.c
 	*/
 	private void totalVehiclesLeftToRepair()
 	{
