@@ -66,7 +66,7 @@ public class Shop
 		for (int i=0; i < mechanics.length; i++) {
 			String mechanicName = mechanics[i].name();
 			//checks for elements in the mechanics array with non-empty name values
-			if (!mechanicName.isEmpty()) {
+			if (!mechanicName.isEmpty() && ((RepairMechanic) mechanics[i]).isAvailable()) {
 
 				if (!isMechanicFound) {
 					//purely for aesthetic purposes
