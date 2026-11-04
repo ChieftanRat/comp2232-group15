@@ -224,6 +224,43 @@ public class Shop
 		}
 	}
 
+	/**
+	 * Calculates the number of whole days needed for a vehicle repair.
+	 * The longer minimum time of the vehicle and mechanic is used.
+	 * Weather damage adds extra repair time.
+	 * @param vehicle vehicle to repair
+	 * @param mechanic mechanic assigned to the repair
+	 * @return total repair time, rounded up to a whole day
+	 */
+	private int calculateRepairDays(DamagedVehicle vehicle, RepairMechanic mechanic)
+	{
+		int days = Math.max(vehicle.minimumRepairDays(), mechanic.minimumRepairDays());
+		Damage damage = createDamage(vehicle.damage());
+
+		if (damage instanceof WeatherDamage)
+		{
+			WeatherDamage weather = (WeatherDamage) damage;
+			return (int) Math.ceil(days * (1 + weather.timeMultiplier()));
+		}
+
+		return days;
+	}
+
+	/**
+	 * Calculates the total price of a repair using damage, labour,
+	 * vehicle repair charge, and parts charge.
+	 * @param vehicle vehicle to repair
+	 * @param mechanic mechanic assigned to the repair
+	 * @return total repair charge in dollars
+	 */
+	private double calculateRepairCost(DamagedVehicle vehicle, RepairMechanic mechanic)
+	{
+		int days = calculateRepairDays(vehicle, mechanic);
+		Damage damage = createDamage(vehicle.damage());
+		double labourCost = mechanic.hourlyRate() * 8 * days;
+
+		return damage.cost() + labourCost + vehicle.repairCost() + vehicle.partsCost();
+	}
 	
 	private boolean performAction(int action)
 	{
