@@ -9,6 +9,8 @@ public class Shop
 	/** Number of vehicles currently in the waiting list.
 	*/
 	private int waitingCount;
+	private JobRecord[] jobs;
+	private int jobCount;
 	public Shop(String prompt)
 	{
 		mechanics = new Mechanic[DatabaseConstants.TOTAL_MECHANICS];
@@ -21,6 +23,9 @@ public class Shop
 
 		waitingVehicles = new Vehicle[DatabaseConstants.TOTAL_VEHICLES];
 		waitingCount = 0;
+
+		jobs = new JobRecord[DatabaseConstants.TOTAL_VEHICLES];
+		jobCount = 0;
 		
 		output = new Display();
 		menu = new Menu(prompt);
@@ -261,6 +266,51 @@ public class Shop
 
 		return damage.cost() + labourCost + vehicle.repairCost() + vehicle.partsCost();
 	}
+
+	/**
+	 * Creates a job record for an assigned repair and updates Display.
+	 * Call this only after a mechanic has actually been assigned.
+	 * @param vehicle vehicle being repaired
+	 * @param mechanic mechanic assigned to the vehicle
+	 * @return the new record, or null if the record list is full
+	 */
+	private JobRecord addJobRecord(DamagedVehicle vehicle, RepairMechanic mechanic)
+	{
+		if (jobCount >= jobs.length)
+		{
+			return null;
+		}
+
+		int days = calculateRepairDays(vehicle, mechanic);
+		double cost = calculateRepairCost(vehicle, mechanic);
+		JobRecord job = new JobRecord(vehicle.type(), mechanic.name(), cost, days);
+		jobs[jobCount] = job;
+		jobCount++;
+
+		output.addJob(job.vehicleType(), job.mechanicName(), job.repairDays(), job.totalCost());
+		return job;
+	}
+
+	/**
+	 * Lists the job records in the order they were created.
+	 * @return nothing
+	 */
+	private void listJobRecords()
+	{
+		if (jobCount == 0)
+		{
+			System.out.println("No job records available.");
+			return;
+		}
+
+		for (int i = 0; i < jobCount; i++)
+		{
+			JobRecord job = jobs[i];
+			System.out.println(job.vehicleType() + " " + job.mechanicName()
+				+ " $" + job.totalCost() + " " + job.repairDays() + " days");
+		}
+	}
+
 	
 	private boolean performAction(int action)
 	{
