@@ -41,7 +41,7 @@ public class Shop
 		for(int i = 0; i < DatabaseConstants.TOTAL_MECHANICS; i++)
 		{
 			md = data.mechanic(i); 
-			mechanics[i] = new Mechanic(md.name(), md.experience(), md.id());
+			mechanics[i] = new RepairMechanic(md.name(), md.experience(), md.id());
 		}
 
 		VehicleData vd;
