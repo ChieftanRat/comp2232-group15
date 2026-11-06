@@ -43,5 +43,12 @@ public class Pothole extends Damage
 		};
 	}
 
+	// Pothole damage adds no extra repair days.
+	@Override
+	public int extraDays(int days)
+	{
+		return 0;
+	}
+
 }
 

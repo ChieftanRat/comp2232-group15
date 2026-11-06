@@ -49,5 +49,12 @@ public class CollisionDamage extends Damage
 		};
 	}
 
+	// Collision damage adds no extra repair days.
+	@Override
+	public int extraDays(int days)
+	{
+		return 0;
+	}
+
 }
 

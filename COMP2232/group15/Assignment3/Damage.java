@@ -23,5 +23,8 @@ abstract public class Damage
 	public abstract double cost();
 
 
+	// Returns the extra repair days for this damage.
+	public abstract int extraDays(int days);
+
 }
 

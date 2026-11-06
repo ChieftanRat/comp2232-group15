@@ -55,5 +55,12 @@ public class WeatherDamage extends Damage
 		};
 	}
 
+	// Weather damage adds its fractional repair time, rounded up to whole days.
+	@Override
+	public int extraDays(int days)
+	{
+		return (int) Math.ceil(days * timeMultiplier());
+	}
+
 }
 
