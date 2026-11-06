@@ -4,14 +4,13 @@ public class Shop
 	private Vehicle vehicles[];
 	private Display output;
 	private Menu menu;
-	/** Vehicles waiting for an available mechanic. 
-	* Not yet used, 
-	*/
+/** Vehicles waiting for a mechanic, in arrival order. */
 	private Vehicle[] waitingVehicles;
 	/** Number of vehicles currently in the waiting list.
-	* should be updated whenever a car is added to waiting 
 	*/
 	private int waitingCount;
+	private JobRecord[] jobs;
+	private int jobCount;
 	public Shop(String prompt)
 	{
 		mechanics = new Mechanic[DatabaseConstants.TOTAL_MECHANICS];
@@ -22,6 +21,12 @@ public class Shop
 		for(int i = 0; i < DatabaseConstants.TOTAL_VEHICLES; i++)
 			vehicles[i] = new Vehicle();
 
+		waitingVehicles = new Vehicle[DatabaseConstants.TOTAL_VEHICLES];
+		waitingCount = 0;
+
+		jobs = new JobRecord[DatabaseConstants.TOTAL_VEHICLES];
+		jobCount = 0;
+		
 		output = new Display();
 		menu = new Menu(prompt);
 	}
@@ -41,7 +46,7 @@ public class Shop
 		for(int i = 0; i < DatabaseConstants.TOTAL_MECHANICS; i++)
 		{
 			md = data.mechanic(i); 
-			mechanics[i] = new Mechanic(md.name(), md.experience(), md.id());
+			mechanics[i] = new RepairMechanic(md.name(), md.experience(), md.id());
 		}
 
 		VehicleData vd;
@@ -61,7 +66,7 @@ public class Shop
 		for (int i=0; i < mechanics.length; i++) {
 			String mechanicName = mechanics[i].name();
 			//checks for elements in the mechanics array with non-empty name values
-			if (!mechanicName.isEmpty()) {
+			if (!mechanicName.isEmpty() && ((RepairMechanic) mechanics[i]).isAvailable()) {
 
 				if (!isMechanicFound) {
 					//purely for aesthetic purposes
@@ -85,10 +90,10 @@ public class Shop
 		boolean isVehicleFound = false;
 		//loops through the vehicles object
 		for (int i=0; i < vehicles.length; i++) {
-			String vehicleModel = vehicles[i].company() + " " + vehicles[i].model() + " " + vehicles[i].type() + " " + vehicles[i].damage();
-			//checks for elements in the vehicles array with non-empty model values
-			// damage shows as 0 due to how the vehicle.class is writing and i cant change it because of the assignment requirements. so if anyone knows how to fix this please let me know.
-			if (!vehicleModel.isEmpty()) {
+			// A vehicle moved to the waiting list is no longer in this array.
+			if (vehicles[i] != null && !vehicles[i].model().isEmpty()) {
+				String vehicleModel = vehicles[i].company() + " " + vehicles[i].model() + " " + vehicles[i].type() + " " + vehicles[i].damage();
+
 
 				if (!isVehicleFound) {
 					//purely for aesthetic purposes
@@ -101,16 +106,58 @@ public class Shop
 				isVehicleFound = true;
 			}
 		}
-		System.out.println("There is " + vehicles.length + " number of vehicles left.");
 		//checks if the boolean hasn't been changed after the loop
 		if (!isVehicleFound) {
 			//informs the user if that is the case
-			System.out.println("No vehicles are under repair");
+			System.out.println("No vehicles are being repaired.");
 		}
 	}
+
 	/**
-	*output the total number of vehicles remaining in the vehicle list
-	*IMPORTANT waitingCount needs to be updated whenever there is a vehicle that needs repair but there is no mechanic
+	 * Moves a vehicle from the vehicle list to the end of the waiting list.
+	 * Call this when no mechanic is available for the vehicle.
+	 * @param index position of the vehicle in the main vehicle array
+	 * @return true if a vehicle was moved; otherwise false
+	 */
+	private boolean addToWaitingList(int index)
+	{
+		if (index < 0 || index >= vehicles.length ||
+		    vehicles[index] == null || vehicles[index].model().isEmpty() ||
+		    waitingCount >= waitingVehicles.length)
+		{
+			return false;
+		}
+
+		waitingVehicles[waitingCount] = vehicles[index];
+		waitingCount++;
+		vehicles[index] = null;
+		return true;
+	}
+
+	/**
+	 * Removes and returns the first waiting vehicle, preserving arrival order.
+	 * Call this when a mechanic is ready to accept a waiting vehicle.
+	 * @return first waiting vehicle, or null if the list is empty
+	 */
+	private Vehicle removeFromWaitingList()
+	{
+		if (waitingCount == 0)
+		{
+			return null;
+		}
+
+		Vehicle nextVehicle = waitingVehicles[0];
+		for (int i = 1; i < waitingCount; i++)
+		{
+			waitingVehicles[i - 1] = waitingVehicles[i];
+		}
+		waitingCount--;
+		waitingVehicles[waitingCount] = null;
+		return nextVehicle;
+	}
+	/**
+	* Outputs the number of vehicles still in the main and waiting lists.
+	 * Vehicles already assigned to a mechanic will be tracked separately later.c
 	*/
 	private void totalVehiclesLeftToRepair()
 	{
@@ -179,6 +226,88 @@ public class Shop
 			default:
 				throw new IllegalArgumentException(
 					"Unsupported damage code: " + damageCode);
+		}
+	}
+
+	/**
+	 * Calculates the number of whole days needed for a vehicle repair.
+	 * The longer minimum time of the vehicle and mechanic is used.
+	 * Weather damage adds extra repair time.
+	 * @param vehicle vehicle to repair
+	 * @param mechanic mechanic assigned to the repair
+	 * @return total repair time, rounded up to a whole day
+	 */
+	private int calculateRepairDays(DamagedVehicle vehicle, RepairMechanic mechanic)
+	{
+		int days = Math.max(vehicle.minimumRepairDays(), mechanic.minimumRepairDays());
+		Damage damage = createDamage(vehicle.damage());
+
+		if (damage instanceof WeatherDamage)
+		{
+			WeatherDamage weather = (WeatherDamage) damage;
+			return (int) Math.ceil(days * (1 + weather.timeMultiplier()));
+		}
+
+		return days;
+	}
+
+	/**
+	 * Calculates the total price of a repair using damage, labour,
+	 * vehicle repair charge, and parts charge.
+	 * @param vehicle vehicle to repair
+	 * @param mechanic mechanic assigned to the repair
+	 * @return total repair charge in dollars
+	 */
+	private double calculateRepairCost(DamagedVehicle vehicle, RepairMechanic mechanic)
+	{
+		int days = calculateRepairDays(vehicle, mechanic);
+		Damage damage = createDamage(vehicle.damage());
+		double labourCost = mechanic.hourlyRate() * 8 * days;
+
+		return damage.cost() + labourCost + vehicle.repairCost() + vehicle.partsCost();
+	}
+
+	/**
+	 * Creates a job record for an assigned repair and updates Display.
+	 * Call this only after a mechanic has actually been assigned.
+	 * @param vehicle vehicle being repaired
+	 * @param mechanic mechanic assigned to the vehicle
+	 * @return the new record, or null if the record list is full
+	 */
+	private JobRecord addJobRecord(DamagedVehicle vehicle, RepairMechanic mechanic)
+	{
+		if (jobCount >= jobs.length)
+		{
+			return null;
+		}
+
+		int days = calculateRepairDays(vehicle, mechanic);
+		double cost = calculateRepairCost(vehicle, mechanic);
+		JobRecord job = new JobRecord(vehicle.type(), mechanic.name(), cost, days);
+		jobs[jobCount] = job;
+		jobCount++;
+
+		output.addJob(job.vehicleType(), job.mechanicName(), job.repairDays(), job.totalCost());
+		return job;
+	}
+
+	/**
+	 * Lists the job records in the order they were created.
+	 * @return nothing
+	 */
+	private void listJobRecords()
+	{
+		if (jobCount == 0)
+		{
+			System.out.println("No job records available.");
+			return;
+		}
+
+		for (int i = 0; i < jobCount; i++)
+		{
+			JobRecord job = jobs[i];
+			System.out.println(job.vehicleType() + " " + job.mechanicName()
+				+ " $" + job.totalCost() + " " + job.repairDays() + " days");
 		}
 	}
 
