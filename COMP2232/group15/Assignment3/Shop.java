@@ -76,7 +76,6 @@ public class Shop
 	/**
 	 * Assigns a vehicle to the first available mechanic in database order.
 	 * Creates its job record before repair work begins.
-	 * A vehicle remains in the main list if no mechanic can accept it.
 	 * @param vehicleIndex position of the vehicle in the main vehicle list
 	 * @return true if assigned; false if no mechanic is available or index invalid
 	 */
@@ -362,6 +361,11 @@ public class Shop
         System.out.println("Please enter a positive whole number.");
         return 0;
     }
+	/**
+	 * Displays the repair status table.
+	 * Handles the error when no jobs exist.
+	 * @return nothing
+	 */
 	
 	private void outputRepairStatus()
 	{
