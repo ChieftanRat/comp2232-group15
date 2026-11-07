@@ -362,6 +362,19 @@ public class Shop
         System.out.println("Please enter a positive whole number.");
         return 0;
     }
+	
+	private void outputRepairStatus()
+	{
+		try
+		{
+			output.outputStatusTable();
+		}
+		catch (java.util.NoSuchElementException e)
+		{
+			if (jobCount != 0)
+				throw e;
+		}
+	}
 	private void run()
 	{
 		// This is the starting point of the simulation.
@@ -369,15 +382,14 @@ public class Shop
 		menu.displayMenu();
 		while(!performAction(menu.getMenuSelection())) 	
 		{
-			// Output the summary as explained in the assignment documentation.
-			if (jobCount > 0)
-				output.outputStatusTable();
+			// Output the summary
+			outputRepairStatus();
 			
 			
 			menu.displayMenu();
 		}
 		output.outputStatusTable();
-		 output.outputSummary(repairedCount, totalDays, (int) Math.round(totalRevenue));
+		output.outputSummary(repairedCount, totalDays, (int) Math.round(totalRevenue));
 	}
 
 	/**
@@ -498,6 +510,7 @@ public class Shop
 	}
 	/**
 	 * Displays the revenue earned from completed repairs.
+	 *Revenue increases only when a repair finishes.
 	 */
 	private void displayTotalRevenue()
 	{
