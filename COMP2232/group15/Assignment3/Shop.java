@@ -82,6 +82,56 @@ public class Shop
 		{
 			return false;
 		}
+		if (waitingCount > 0)
+		{
+			addToWaitingList(vehicleIndex);
+			return false;
+		}
+		for (int i = 0; i < mechanics.length; i++)
+		{
+			RepairMechanic mechanic = (RepairMechanic) mechanics[i];
+			if (mechanic.isAvailable())
+			{
+				DamagedVehicle vehicle = (DamagedVehicle) vehicles[vehicleIndex];
+				int days = calculateRepairDays(vehicle, mechanic);
+				JobRecord job = addJobRecord(vehicle, mechanic);
+				if (job == null)
+				{
+					return false;
+				}
+
+				activeVehicles[i] = vehicle;
+				remainingRepairDays[i] = days;
+				mechanic.setAvailable(false);
+				vehicles[vehicleIndex] = null;
+				output.outputAssignedToMechanic(mechanic.name(), vehicle.type(),
+					vehicle.company(), vehicle.model());
+				return true;
+			}
+		}
+		// No mechanic is available, so the vehicle must wait.
+		addToWaitingList(vehicleIndex);
+		return false;
+	}
+	/**
+	 * Assigns the first waiting vehicle to a mechanic who has become free.
+	 * This will be called when a repair finishes in the daily simulation.
+	 * @param mechanicIndex position of the newly available mechanic
+	 * @return true if the waiting vehicle was assigned; otherwise false
+	 */
+	private boolean assignFirstWaitingVehicle(int mechanicIndex)
+	{
+		if (mechanicIndex < 0 || mechanicIndex >= mechanics.length ||
+			waitingCount == 0 || jobCount >= jobs.length)
+		{
+			return false;
+		}
+
+		RepairMechanic mechanic = (RepairMechanic) mechanics[mechanicIndex];
+		if (!mechanic.isAvailable() || activeVehicles[mechanicIndex] != null)
+		{
+			return false;
+		}
 		
 	private void listAvailableMechanics(){
 		//this is false since the checks haven't begun
@@ -152,9 +202,11 @@ public class Shop
 			return false;
 		}
 
-		waitingVehicles[waitingCount] = vehicles[index];
+		Vehicle vehicle = vehicles[index];
+		waitingVehicles[waitingCount] = vehicle;
 		waitingCount++;
 		vehicles[index] = null;
+		output.outputAddedToWaitingList(vehicle.type(), vehicle.company(), vehicle.model());
 		return true;
 	}
 
