@@ -388,7 +388,7 @@ public class Shop
 			
 			menu.displayMenu();
 		}
-		output.outputStatusTable();
+		outputRepairStatus();
 		output.outputSummary(repairedCount, totalDays, (int) Math.round(totalRevenue));
 	}
 
