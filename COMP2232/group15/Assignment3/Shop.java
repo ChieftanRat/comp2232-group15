@@ -12,6 +12,11 @@ public class Shop
 	private JobRecord[] jobs;
 	private int jobCount;
 	private double totalRevenue;
+	/** Vehicle currently assigned to each mechanic, or null if free. */
+	private Vehicle[] activeVehicles;
+	/** Number of days remaining for each mechanic's current repair. */
+	private int[] remainingRepairDays;
+	
 	public Shop(String prompt)
 	{
 		mechanics = new Mechanic[DatabaseConstants.TOTAL_MECHANICS];
@@ -28,6 +33,8 @@ public class Shop
 		jobs = new JobRecord[DatabaseConstants.TOTAL_VEHICLES];
 		jobCount = 0;
 		totalRevenue = 0.0;
+		activeVehicles = new Vehicle[DatabaseConstants.TOTAL_MECHANICS];
+		remainingRepairDays = new int[DatabaseConstants.TOTAL_MECHANICS];
 		
 		output = new Display();
 		menu = new Menu(prompt);
@@ -60,7 +67,22 @@ public class Shop
 			vehicles[i] = new DamagedVehicle(vd.company(), vd.model(), vd.type(), vd.damage());
 		}
 	}
-
+	/**
+	 * Assigns a vehicle to the first available mechanic in database order.
+	 * Creates its job record before repair work begins.
+	 * A vehicle remains in the main list if no mechanic can accept it.
+	 * @param vehicleIndex position of the vehicle in the main vehicle list
+	 * @return true if assigned; false if no mechanic is available or index invalid
+	 */
+	private boolean assignVehicle(int vehicleIndex)
+	{
+		if (vehicleIndex < 0 || vehicleIndex >= vehicles.length ||
+			vehicles[vehicleIndex] == null ||
+			vehicles[vehicleIndex].model().isEmpty())
+		{
+			return false;
+		}
+		
 	private void listAvailableMechanics(){
 		//this is false since the checks haven't begun
 		boolean isMechanicFound = false;
@@ -159,7 +181,6 @@ public class Shop
 	}
 	/**
 	* Outputs the number of vehicles still in the main and waiting lists.
-	 * Vehicles already assigned to a mechanic will be tracked separately later.c
 	*/
 	private void totalVehiclesLeftToRepair()
 	{
@@ -167,6 +188,14 @@ public class Shop
 
 		for (int i = 0; i < vehicles.length; i++)
 		{
+			int total = waitingCount;
+		for (int i = 0; i < activeVehicles.length; i++)
+		{
+			if (activeVehicles[i] != null)
+			{
+				total++;
+			}
+		}
 			if (vehicles[i] != null && !vehicles[i].model().isEmpty())
 			{
 				total++;
