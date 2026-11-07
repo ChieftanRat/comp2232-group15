@@ -11,6 +11,7 @@ public class Shop
 	private int waitingCount;
 	private JobRecord[] jobs;
 	private int jobCount;
+	private double totalRevenue;
 	public Shop(String prompt)
 	{
 		mechanics = new Mechanic[DatabaseConstants.TOTAL_MECHANICS];
@@ -26,6 +27,7 @@ public class Shop
 
 		jobs = new JobRecord[DatabaseConstants.TOTAL_VEHICLES];
 		jobCount = 0;
+		totalRevenue = 0.0;
 		
 		output = new Display();
 		menu = new Menu(prompt);
@@ -178,14 +180,12 @@ public class Shop
 	{
 		// This is the starting point of the simulation.
 
-		output.addJob("V1", "m1", 1, 1.1);
-		output.addJob("V2", "m2", 2, 2.2);
-
 		menu.displayMenu();
 		while(!performAction(menu.getMenuSelection())) 	
 		{
 			// Output the summary as explained in the assignment documentation.
-			output.outputStatusTable();
+			if (jobCount > 0)
+				output.outputStatusTable();
 			
 			
 			menu.displayMenu();
@@ -310,7 +310,13 @@ public class Shop
 				+ " $" + job.totalCost() + " " + job.repairDays() + " days");
 		}
 	}
-
+	/**
+	 * Displays the revenue earned from completed repairs.
+	 */
+	private void displayTotalRevenue()
+	{
+		System.out.println("Total revenue is $" + String.format("%.2f", totalRevenue));
+	}
 	
 	private boolean performAction(int action)
 	{
@@ -335,9 +341,11 @@ public class Shop
 				break;
 				
 			case Menu.MENU_OPTION_TOTAL_REVENUE: 
+				displayTotalRevenue();
 				break;
 				
 			case Menu.MENU_OPTION_JOB_LIST:
+				listJobRecords();
 				break;
 				
 			case Menu.MENU_OPTION_RUN_SIMULATION:
