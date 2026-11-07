@@ -444,13 +444,7 @@ public class Shop
 		int days = Math.max(vehicle.minimumRepairDays(), mechanic.minimumRepairDays());
 		Damage damage = createDamage(vehicle.damage());
 
-		if (damage instanceof WeatherDamage)
-		{
-			WeatherDamage weather = (WeatherDamage) damage;
-			return (int) Math.ceil(days * (1 + weather.timeMultiplier()));
-		}
-
-		return days;
+		return days + damage.extraDays(days);
 	}
 
 	/**
